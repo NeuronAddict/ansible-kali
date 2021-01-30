@@ -5,7 +5,7 @@
 
 - name: 'Ensure github repositories are in {{ default_user }} home'
   git:
-    repo: 'git@github.com:/NeuronAddict/{{ item }}'
+    repo: 'https://github.com:/NeuronAddict/{{ item }}'
     dest: '/home/{{ default_user }}/{{ item }}'
     clone: true
     update: true
