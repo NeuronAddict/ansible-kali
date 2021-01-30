@@ -31,3 +31,18 @@ check the file vbox-hosts to match the ip of your vbox machines
 ## vendor
 
 If you use vendor products put it on roles/vendor/files/
+
+
+## user
+
+To create user shadow : 
+
+```
+python -c "import random,string,crypt;
+randomsalt = ''.join(random.sample(string.ascii_letters,8));
+print crypt.crypt('MySecretPassword', '\$6\$%s\$' % randomsalt)"
+---
+$6$HMpFTkgb$WqzuqMqYbjWsXFrOtvZPo.1gIkH6HiXJGr4QPv.k26jE.3mE.sdf3dds[...]
+```
+
+Source: https://www.shellhacks.com/linux-generate-password-hash/
