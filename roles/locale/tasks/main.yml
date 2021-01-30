@@ -1,0 +1,14 @@
+- name: Ensure a french exists
+  community.general.locale_gen:
+    name: fr_FR.UTF-8
+    state: present
+
+- name: set as default locale
+  shell:
+    cmd: localectl set-locale LANG=fr_FR.UTF-8 && touch /root/.locale-fr
+    creates: /root/.locale-fr
+
+- name: set french keyboard to default
+  copy:
+    src: files/keyboard
+    dest: /etc/default/

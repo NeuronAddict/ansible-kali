@@ -1,0 +1,16 @@
+- name: ensure ufw is installed
+  apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: ensure vagrant ssh is allowed
+  ufw:
+    from_ip: 10.0.2.2
+    to_port: '22'
+    proto: tcp
+    rule: allow
+
+- name: ensure ufw is activated
+  ufw:
+    state: enabled

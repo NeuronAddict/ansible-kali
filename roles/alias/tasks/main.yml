@@ -1,0 +1,29 @@
+- name: add ta alias (tail apache logs)
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias ta='sudo tail -f /var/log/apache2/access.log'
+
+- name: add so alias (start openvpn)
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias so='sudo systemctl restart openvpn && sleep 3 && source ~/.zshrc && echo $IP'
+
+- name: add sa alias (start apache2)
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias sa='sudo systemctl restart apache2'
+
+- name: add bd alias (launch sbd on port 443)
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias bd='sudo sbd -lvp 443'
+
+- name: add nc -vlp 443 alias
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias ncl='sudo ncat -vlp 443'
+
+- name: set ip on zsh
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: "export IP=$(ip address show dev tun0 2>/dev/null | grep {{ vpn_ip_pattern }} | awk '{print $2}' | cut -f 1 -d '/')"

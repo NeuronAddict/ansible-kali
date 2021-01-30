@@ -1,0 +1,32 @@
+---
+# TODO: add host keys
+# https://docs.github.com/en/github-ae@latest/github/authenticating-to-github/testing-your-ssh-connection
+# github fingerprint : SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8
+
+- name: 'Ensure github repositories are in {{ default_user }} home'
+  git:
+    repo: 'git@github.com:/NeuronAddict/{{ item }}'
+    dest: '/home/{{ default_user }}/{{ item }}'
+    clone: true
+    update: true
+  ignore_errors: true
+  become_user: '{{ default_user }}'
+  loop:
+    - 'sectools'
+    - 'pentesting-notes'
+    - 'burp-options'
+
+
+- name: Ensure zsh has sectools path
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: 'path+=(~/sectools/)'
+
+
+- name: Ensure fuzzdb is present and updated
+  git:
+    repo: 'https://github.com/fuzzdb-project/fuzzdb.git'
+    dest: '/home/{{ default_user }}/fuzzdb'
+    clone: true
+    update: true
+  become_user: '{{ default_user }}'

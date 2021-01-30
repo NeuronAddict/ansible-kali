@@ -1,0 +1,7 @@
+#! /bin/bash -e
+
+# TODO : fix don't work in ssh context
+export DISPLAY=:0.0
+
+dconf load /apps/guake/ < /etc/guake-default-config
+touch /home/{{ default_user }}/.guake-config

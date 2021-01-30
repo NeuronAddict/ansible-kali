@@ -1,0 +1,45 @@
+---
+- name: Ensure apache2 is installed
+  apt:
+    name: apache2
+    state: latest
+    update_cache: true
+
+- name: Ensure libapache2-mod-php is absent
+  apt:
+    name: 'libapache2-mod-php*'
+    state: absent
+    purge: true
+    autoremove: true
+    autoclean: true
+
+- name: Ensure sbd link exists
+  file:
+    src: /usr/bin/sbd
+    dest: /var/www/html/sbd
+    state: link
+
+- name: Ensure LinEnum is in www folder
+  git:
+    repo: https://github.com/rebootuser/LinEnum.git
+    dest: /var/www/html/linenum
+    clone: true
+    update: true
+
+- name: Ensure pspy is in www folder
+  get_url:
+    url: 'https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy{{ item }}'
+    dest: /var/www/html/
+    force: true
+    owner: root
+    mode: '0644'
+  loop:
+    - '32'
+    - '64'
+
+- name: Ensure port 80 is open
+  ufw:
+    to_port: '80'
+    state: enabled
+    direction: in
+    rule: allow
