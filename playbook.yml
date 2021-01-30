@@ -22,4 +22,5 @@
     - role: 'roles/sbd'
     - role: 'roles/apache'
     - role: 'roles/peda'
+    - role: 'roles/vendor'
 

@@ -1,0 +1,11 @@
+- name: Ensure vendor folder exists
+  file:
+    path: '/home/{{ default_user }}/vendor'
+    state: directory
+    owner: '{{ default_user }}'
+
+- name: Ensure vendor scripts are copied in home
+  copy:
+    src: files/
+    dest: '/home/{{ default_user }}/vendor'
+    owner: '{{ default_user }}'
