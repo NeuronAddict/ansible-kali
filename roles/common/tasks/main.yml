@@ -1,0 +1,81 @@
+- name: 'add user {{ default_user }}'
+  user:
+    name: '{{ default_user }}'
+    state: present
+    create_home: true
+    password: '{{ user_shadow }}'
+    generate_ssh_key: true
+    shell: /usr/bin/zsh
+    groups:
+      - sudo
+
+- name: 'Set timezone to {{ timezone }}'
+  community.general.timezone:
+    name: '{{ timezone }}'
+
+- name: ensure kali-grant-root is removed
+  apt:
+    name: kali-grant-root
+    state: absent
+    autoclean: true
+    autoremove: true
+    purge: true
+
+- name: add kali defaults
+  apt:
+    name: kali-defaults
+    state: present
+    update_cache: yes
+
+- name: add useful packages (bettercap,git, firefox, ncat, gobuster, seclists, htop, ascii, wpscan)
+  apt:
+    name: bettercap,git,firefox-esr,ncat,gobuster,seclists,htop,ascii,wpscan
+    state: present
+    update_cache: yes
+
+- name: Ensure burpsuite community is removed (to install pro version)
+  apt:
+    name: burpsuite
+    state: absent
+    update_cache: yes
+    autoremove: yes
+    autoclean: yes
+
+- name: ensure firefox policies are present
+  copy:
+    src: files/policies.json
+    dest: /usr/share/firefox-esr/distribution/policies.json
+
+- name: set git user email
+  git_config:
+    name: user.email
+    scope: global
+    value: '{{ git_email }}'
+  become_user: '{{ default_user }}'
+
+- name: set git user name
+  git_config:
+    name: user.name
+    scope: global
+    value: '{{ git_user }}'
+  become_user: '{{ default_user }}'
+
+- name: set git rebase strategy
+  git_config:
+    name: pull.rebase
+    scope: global
+    value: 'true'
+  become_user: '{{ default_user }}'
+
+- name: upgrade packages
+  apt:
+    update_cache: true
+    upgrade: 'dist'
+    autoclean: true
+    autoremove: true
+
+- name: Extend sudo timeout
+  template:
+    src: 'files/timeout.j2'
+    dest: /etc/sudoers.d/timeout
+    mode: '0400'

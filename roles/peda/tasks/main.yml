@@ -1,0 +1,21 @@
+---
+- name: add peda repo
+  git:
+    repo: https://github.com/longld/peda.git
+    dest: '/home/{{ default_user }}/peda'
+    clone: true
+    update: true
+  become_user: '{{ default_user }}'
+
+- name: Ensure gdb is installed
+  apt:
+    name: gdb
+    state: latest
+    update_cache: true
+
+- name: source peda
+  lineinfile:
+    path: '/home/{{ default_user }}/.gdbinit'
+    line: 'source ~/peda/peda.py'
+    create: true
+  become_user: '{{ default_user }}'

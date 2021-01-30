@@ -1,0 +1,17 @@
+---
+- name: Add source victim ip file in zshrc
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: '[[ -f ~/.victim ]] && source ~/.victim'
+
+- name: Ensure set_victim is in /usr/local/bin
+  copy:
+    src: set_victim.sh
+    dest: /usr/local/bin/
+    mode: '0755'
+    owner: root
+
+- name: add set_victim alias
+  lineinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    line: alias sv='function _(){ set_victim.sh $1 && source ~/.victim }; _'

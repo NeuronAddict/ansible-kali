@@ -1,0 +1,31 @@
+- name: install guake
+  apt:
+    name: guake
+    update_cache: yes
+    install_recommends: yes
+
+- name: install dconf-cli
+  apt:
+    name: dconf-cli
+    update_cache: yes
+    install_recommends: yes
+
+- name: copy guake config to /etc/guake-default-config
+  copy:
+    src: files/etc/guake-default-config
+    dest: /etc/guake-default-config
+    mode: 'u=rw'
+
+- name: copy guake config script (/usr/local/bin/set-guake-default)
+  template:
+    src: files/usr/local/bin/set-guake-default.j2
+    dest: /usr/local/bin/set-guake-default
+    mode: 'u=rwx,g,o=rx'
+
+- name: apply guake config
+  command:
+    argv:
+      - '/bin/bash'
+      - '/usr/local/bin/set-guake-default'
+    creates: '/home/{{ default_user }}/.guake-config'
+  become_user: '{{ default_user }}'

@@ -1,0 +1,25 @@
+#!/usr/bin/env ansible-playbook
+
+- name: 'set kali vm'
+  hosts: all
+  remote_user: vagrant
+  become: yes
+  vars_files:
+    - vault.yml
+    - config.yml
+
+  roles:
+    - role: 'roles/local_apt_proxy'
+    - role: 'roles/common'
+    - role: 'roles/ufw'
+    - role: 'roles/set_victim'
+    - role: 'roles/locale'
+    - role: 'roles/guake'
+    - role: 'roles/vpn'
+    - role: 'roles/unattented_upgrades'
+    - role: 'roles/git_sources'
+    - role: 'roles/alias'
+    - role: 'roles/sbd'
+    - role: 'roles/apache'
+    - role: 'roles/peda'
+
