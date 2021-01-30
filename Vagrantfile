@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
 
     vb.gui = true
-    vb.memory = "16000"
+    vb.memory = "8000"
     vb.cpus = 4
 
     vb.name = "kalilinux (vagrant)"
@@ -63,10 +63,14 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.vm.provision "ansible", run: "always" do |ansible|
+  config.vm.provision "ansible_local", run: "always" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "playbook.yml"
-      ansible.ask_vault_pass = true
+      ansible.galaxy_role_file = "requirements.yml"
+      ansible.galaxy_role_file = "requirements.yml"
+      ansible.galaxy_roles_path = "/etc/ansible/roles"
+      ansible.galaxy_command = "sudo ansible-galaxy collection install -r requirements.yml -p /usr/share/ansible/collections"
+
       ansible.extra_vars = {
         "ansible_python_interpreter": "/usr/bin/python3"
       }
