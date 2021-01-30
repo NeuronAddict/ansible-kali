@@ -27,3 +27,7 @@ openvpn_password:  # if vpn
 ## hosts
 
 check the file vbox-hosts to match the ip of your vbox machines
+
+## vendor
+
+If you use vendor products put it on roles/vendor/files/
