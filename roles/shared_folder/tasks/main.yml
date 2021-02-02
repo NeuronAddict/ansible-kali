@@ -1,0 +1,12 @@
+---
+- name: Ensure user folder is created
+  file:
+    path: '/mnt/shared/{{ default_user }}'
+    owner: '{{ default_user }}'
+    state: directory
+
+- name: link folder to home
+  file:
+    state: link
+    src: '/mnt/shared/{{ default_user }}'
+    dest: '/home/{{ default_user }}/shared'

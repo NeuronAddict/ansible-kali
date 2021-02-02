@@ -1,6 +1,5 @@
 .idea/
 .vagrant/
-shared_kali/
 vault.yml
 config.yml
 roles/vpn/files/etc/openvpn/*.conf
