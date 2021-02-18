@@ -58,6 +58,9 @@ Vagrant.configure("2") do |config|
     vb.name = "kalilinux (vagrant)"
     vb.check_guest_additions = true
 
+    # if use windows, activate it to use hyper V
+    #vb.customize ["modifyvm", :id, "--paravirtprovider", "hyperv"]
+
   end
   #
   # View the documentation for the provider you are using for more
