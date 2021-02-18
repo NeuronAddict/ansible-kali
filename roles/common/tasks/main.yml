@@ -67,13 +67,6 @@
     value: 'true'
   become_user: '{{ default_user }}'
 
-- name: upgrade packages
-  apt:
-    update_cache: true
-    upgrade: 'dist'
-    autoclean: true
-    autoremove: true
-
 - name: Extend sudo timeout
   template:
     src: 'files/timeout.j2'

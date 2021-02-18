@@ -24,3 +24,4 @@
     - role: 'roles/apache'
     - role: 'roles/peda'
     - role: 'roles/vendor'
+    - role: 'roles/upgrade'
