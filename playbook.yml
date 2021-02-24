@@ -10,11 +10,10 @@
 
   roles:
     - role: 'roles/local_apt_proxy'
+    - role: 'roles/locale'
     - role: 'roles/common'
-    - role: 'roles/shared_folder'
     - role: 'roles/ufw'
     - role: 'roles/set_victim'
-    - role: 'roles/locale'
     - role: 'roles/guake'
     - role: 'roles/vpn'
     - role: 'roles/unattented_upgrades'
@@ -24,4 +23,5 @@
     - role: 'roles/apache'
     - role: 'roles/peda'
     - role: 'roles/vendor'
+    - role: 'roles/shared_folder'
     - role: 'roles/upgrade'
