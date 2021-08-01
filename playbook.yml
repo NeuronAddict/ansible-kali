@@ -24,3 +24,11 @@
     - role: 'roles/peda'
     - role: 'roles/vendor'
 
+
+  tasks:
+    - name: upgrade packages
+      apt:
+        update_cache: true
+        upgrade: 'dist'
+        autoclean: true
+        autoremove: true

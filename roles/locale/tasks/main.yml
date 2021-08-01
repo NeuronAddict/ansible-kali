@@ -12,3 +12,8 @@
   copy:
     src: files/keyboard
     dest: /etc/default/
+  notify:
+    - reboot
+
+- name: Flush handlers
+  meta: flush_handlers

@@ -6,6 +6,6 @@
 
 - name: Ensure vendor scripts are copied in home
   copy:
-    src: files/
+    src: vendor/
     dest: '/home/{{ default_user }}/vendor'
     owner: '{{ default_user }}'

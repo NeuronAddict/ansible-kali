@@ -19,6 +19,12 @@
     dest: /var/www/html/sbd
     state: link
 
+- name: Ensure busybox link exists
+  file:
+    src: /usr/bin/busybox
+    dest: /var/www/html/busybox
+    state: link
+
 - name: Ensure LinEnum is in www folder
   git:
     repo: https://github.com/rebootuser/LinEnum.git
