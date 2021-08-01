@@ -1,15 +1,10 @@
 ---
-# TODO: add host keys
-# https://docs.github.com/en/github-ae@latest/github/authenticating-to-github/testing-your-ssh-connection
-# github fingerprint : SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8
-
 - name: 'Ensure github repositories are in {{ default_user }} home'
   git:
-    repo: 'git@github.com:/NeuronAddict/{{ item }}'
+    repo: 'https://github.com:/NeuronAddict/{{ item }}'
     dest: '/home/{{ default_user }}/{{ item }}'
     clone: true
     update: true
-  ignore_errors: true
   become_user: '{{ default_user }}'
   loop:
     - 'sectools'
