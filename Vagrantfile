@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+current_dir    = File.dirname(File.expand_path(__FILE__))
+vagrant_config = YAML.load_file("#{current_dir}/config.yml")
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -55,7 +58,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "16000"
     vb.cpus = 4
 
-    vb.name = "kalilinux (vagrant)"
+    vb.name = "kalilinux (vagrant) - " + vagrant_config['vm_name']
     vb.check_guest_additions = true
 
   end
