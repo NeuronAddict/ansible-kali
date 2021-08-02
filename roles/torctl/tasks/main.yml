@@ -1,0 +1,51 @@
+---
+
+- name: ensure tor is installed
+  apt:
+    name: tor
+    state: present
+
+- name: clone torrc
+  git:
+    repo: 'https://github.com/BlackArch/torctl.git'
+    dest: '/home/{{ default_user }}/torctl'
+    clone: true
+    update: true
+    force: true
+  become_user: '{{ default_user }}'
+
+- name: copy torctl file
+  command:
+    argv:
+      - 'cp'
+      - '/home/{{ default_user }}/torctl/torctl'
+      - '/home/{{ default_user }}/torctl/torctl.new'
+
+- name: fix torctl
+  lineinfile:
+    path: '/home/{{ default_user }}/torctl/torctl.new'
+    regexp: '^TOR_UID='
+    line: 'TOR_UID=debian-tor'
+
+- name: copy torctl file
+  command:
+    argv:
+      - 'cp'
+      - '/home/{{ default_user }}/torctl/torctl.new'
+      - '/usr/bin/torctl'
+
+- name: copy services file
+  command:
+    argv:
+      - 'cp'
+      - '/home/{{ default_user }}/torctl/service/{{ item }}'
+      - '/etc/systemd/system/'
+  loop:
+    - 'torctl-autostart.service'
+    - 'torctl-autowipe.service'
+
+- name: valid service torctl
+  systemd:
+    daemon_reload: true
+    name: torctl-autostart
+    state: reloaded
