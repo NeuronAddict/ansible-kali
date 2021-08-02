@@ -33,5 +33,4 @@
         upgrade: 'dist'
         autoclean: true
         autoremove: true
-      # TODO conditionnal with env var
-      when: 'false'
+      when: upgrade_on_playbook
