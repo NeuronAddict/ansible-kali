@@ -1,6 +1,6 @@
 ---
 
-- name: ensure tor is installed
+- name: ensure tor and tor brower are installed
   apt:
     name: tor,torbrowser-launcher
     state: present
