@@ -27,3 +27,4 @@
   lineinfile:
     path: '/home/{{ default_user }}/.zshrc'
     line: "export IP=$(ip address show dev tun0 2>/dev/null | grep {{ vpn_ip_pattern }} | awk '{print $2}' | cut -f 1 -d '/')"
+  when: vpn_ip_pattern
