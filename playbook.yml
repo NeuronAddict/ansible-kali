@@ -23,7 +23,7 @@
     - role: 'roles/apache'
     - role: 'roles/peda'
     - role: 'roles/vendor'
-    - role: 'roles/torctl'
+    - role: 'roles/tor'
 
   tasks:
     - name: upgrade packages
