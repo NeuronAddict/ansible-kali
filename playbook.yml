@@ -17,13 +17,14 @@
     - role: 'roles/guake'
     - role: 'roles/vpn'
     - role: 'roles/unattented_upgrades'
-    - role: 'roles/git_sources'
     - role: 'roles/alias'
     - role: 'roles/sbd'
-    - role: 'roles/apache'
-    - role: 'roles/peda'
     - role: 'roles/vendor'
     - role: 'roles/tor'
+
+    - role: 'roles/git_sources'
+    - role: 'roles/apache'
+    - role: 'roles/peda'
 
   tasks:
     - name: upgrade packages
