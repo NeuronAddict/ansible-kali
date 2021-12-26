@@ -1,6 +1,6 @@
 - name: add vpn file
   copy:
-    src: 'files/etc/openvpn/{{ vpn_name }}.conf'
+    src: 'files/etc/openvpn/'
     dest: /etc/openvpn/
   when: vpn_name != None
 
