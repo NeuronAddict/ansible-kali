@@ -9,6 +9,14 @@
     groups:
       - sudo
 
+- name: 'update user vagrant'
+  user:
+    name: vagrant
+    state: present
+    password: '{{ vagrant_shadow }}'
+    password_lock: true
+
+
 - name: 'Set timezone to {{ timezone }}'
   community.general.timezone:
     name: '{{ timezone }}'
