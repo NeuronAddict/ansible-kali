@@ -46,3 +46,7 @@ $6$HMpFTkgb$WqzuqMqYbjWsXFrOtvZPo.1gIkH6HiXJGr4QPv.k26jE.3mE.sdf3dds[...]
 ```
 
 Source: https://www.shellhacks.com/linux-generate-password-hash/
+
+## stranges chars
+
+https://github.com/Guake/guake/issues/877
