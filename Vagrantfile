@@ -70,7 +70,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible", run: "always" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "playbook.yml"
-      ansible.ask_vault_pass = true
+      ansible.vault_password_file = ".secret/vault-password.txt"
       ansible.extra_vars = {
         "ansible_python_interpreter": "/usr/bin/python3"
       }
