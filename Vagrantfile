@@ -49,6 +49,9 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "shared_kali", "/mnt/shared", create: true
 
+  if vagrant_config['intnet_dhcp']
+    config.vm.network "private_network", virtualbox__intnet: true, type: "dhcp"
+  end
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
