@@ -2,31 +2,31 @@
   copy:
     src: 'files/etc/openvpn/'
     dest: /etc/openvpn/
-  when: vpn_name != None
+  when: vpn_name is defined and vpn_name != None
 
 - name: install openvpn
   apt:
     name: openvpn
     install_recommends: yes
     update_cache: yes
-  when: vpn_name != None
+  when: vpn_name is defined and vpn_name != None
 
 - name: copy default config
   template:
     src: files/etc/default/openvpn.j2
     dest: /etc/default/openvpn
-  when: vpn_name != None
+  when: vpn_name is defined and vpn_name != None
 
 - name: reload but disable openvpn
   systemd:
     daemon_reload: yes
     name: openvpn
     enabled: false
-  when: vpn_name != None
+  when: vpn_name is defined and vpn_name != None
 
 - name: copy auth file
   template:
     src: templates/auth.txt.j2
     dest: /etc/openvpn/auth.txt
     mode: '0400'
-  when: vpn_name != None
+  when: vpn_name is defined and vpn_name != None
