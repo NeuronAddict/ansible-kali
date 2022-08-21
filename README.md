@@ -2,7 +2,7 @@
 
 ## config
 
-Fill config.yml
+create file config.yml on root.
 
 ```
 apt_proxy: host:port # leave blank to not use apt proxy
@@ -19,7 +19,7 @@ intnet_dhcp: true # use an intnet vbox with dhcp
 
 ## vault
 
-vault.yml
+create an ansible vault.yml with the following content
 ```
 vagrant_shadow: # shadow hash for vagrant, avoid security risk (vagrant is sudo)
 user_shadow: # shadow hash for the user
@@ -27,24 +27,17 @@ openvpn_username: # if vpn
 openvpn_password:  # if vpn
 ```
 
-## vendor
-
-If you use vendor products put it on roles/vendor/
-
-
-## user
-
-To create user shadow : 
+To create user shadow from password :
 
 ```
-python -c "import random,string,crypt;
-randomsalt = ''.join(random.sample(string.ascii_letters,8));
-print crypt.crypt('MySecretPassword', '\$6\$%s\$' % randomsalt)"
----
-$6$HMpFTkgb$WqzuqMqYbjWsXFrOtvZPo.1gIkH6HiXJGr4QPv.k26jE.3mE.sdf3dds[...]
+python hash.py
 ```
 
 Source: https://www.shellhacks.com/linux-generate-password-hash/
+
+## vendor
+
+If you use vendor products put it on roles/vendor/
 
 ## stranges chars
 
