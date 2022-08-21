@@ -10,11 +10,10 @@ default_user: me # default user, use this user to make kali fun things
 git_user: # your git user
 git_email: # git email
 timezone: Europe/Paris # timezone
-vpn_ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP
-vpn_name: # blank to not use vpn
-# if not blank, you must add a file with {{ vpn_name }}.conf in roles/vpn/files/etc/openvpn with your openvpn conf
+vpn_ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
+vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in roles/vpn/files/etc/openvpn with your openvpn conf
 vm_name: 'my-awesome-vm' # name of the vm
-upgrade_on_playbook: true # upgrade vm on playbook, can be very long !
+upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible !
 intnet_dhcp: true # use an intnet vbox with dhcp
 ```
 
