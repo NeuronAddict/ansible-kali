@@ -21,6 +21,7 @@ intnet_dhcp: true # use an intnet vbox with dhcp
 
 vault.yml
 ```
+vagrant_shadow: # shadow hash for vagrant, avoid security risk (vagrant is sudo)
 user_shadow: # shadow hash for the user
 openvpn_username: # if vpn
 openvpn_password:  # if vpn
