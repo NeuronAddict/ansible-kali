@@ -10,6 +10,7 @@
 
   roles:
     - role: 'roles/local_apt_proxy'
+    - role: 'ntp'
     - role: 'roles/common'
     - role: 'roles/ufw'
     - role: 'roles/set_victim'

@@ -1,0 +1,16 @@
+---
+- name: remove ntp
+  apt:
+    name: ntp
+    state: absent
+
+- name: install systemd-timesyncd
+  apt:
+    name: systemd-timesyncd
+    state: present
+
+- name: enable systemd-timesyncd
+  systemd:
+    name: systemd-timesyncd
+    enabled: true
+    state: started
