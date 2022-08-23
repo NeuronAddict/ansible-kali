@@ -22,6 +22,7 @@
     - role: 'roles/sbd'
     - role: 'roles/vendor'
     - role: 'roles/tor'
+    - role: 'discovery'
 
     - role: 'roles/git_sources'
     - role: 'roles/apache'
