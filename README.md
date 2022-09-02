@@ -15,6 +15,8 @@ vpn_name: # blank or absent to not use vpn, if not blank, you must add a file wi
 vm_name: 'my-awesome-vm' # name of the vm
 upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible !
 intnet_dhcp: true # use an intnet vbox with dhcp
+enabled_vpn: true # enable vpn at startup
+autologin: true # do not prompt login on lightdm
 ```
 
 ## vault
