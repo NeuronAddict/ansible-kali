@@ -32,10 +32,12 @@
   systemd:
     name: openvpn
     enabled: false
+    state: stopped
   when: vpn_name is defined and vpn_name != None and (enabled_vpn is not defined or not enabled_vpn)
 
 - name: enable openvpn
   systemd:
     name: openvpn
     enabled: true
+    state: started
   when: vpn_name is defined and vpn_name != None and enabled_vpn is defined and enabled_vpn

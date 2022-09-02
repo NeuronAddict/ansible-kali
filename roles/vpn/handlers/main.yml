@@ -1,5 +1,19 @@
 ---
 - name: daemon reload
+  command: /bin/true
+  notify:
+    - daemon reload without restart
+    - daemon reload and restart
+
+- name: daemon reload without restart
   systemd:
     name: openvpn
     daemon_reload: true
+  when: enabled_vpn is not defined or not enabled_vpn
+
+- name: daemon reload and restart
+  systemd:
+    name: openvpn
+    daemon_reload: true
+    state: restarted
+  when: enabled_vpn is defined and enabled_vpn
