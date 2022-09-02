@@ -10,6 +10,7 @@
     src: files/etc/default/openvpn.j2
     dest: /etc/default/openvpn
   when: vpn_name is defined and vpn_name != None
+  notify: daemon reload
 
 - name: copy auth file
   template:
@@ -17,6 +18,7 @@
     dest: /etc/openvpn/auth.txt
     mode: '0400'
   when: vpn_name is defined and vpn_name != None
+  notify: daemon reload
 
 - name: add vpn file
   copy:
@@ -24,10 +26,10 @@
     dest: /etc/openvpn/
     mode: '0400'
   when: vpn_name is defined and vpn_name != None
+  notify: daemon reload
 
-- name: reload but disable openvpn
+- name: disable openvpn
   systemd:
-    daemon_reload: yes
     name: openvpn
     enabled: false
   when: vpn_name is defined and vpn_name != None
