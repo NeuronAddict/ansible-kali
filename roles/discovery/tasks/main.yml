@@ -2,5 +2,5 @@
 
 - name: install discovery suite
   apt:
-    name: dnsx,python3-httpx,subfinder,nuclei,naabu,proxify
+    name: dnsx,httpx-toolkit,subfinder,nuclei,naabu,proxify
     state: present
