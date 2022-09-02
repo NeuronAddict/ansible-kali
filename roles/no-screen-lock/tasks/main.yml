@@ -1,0 +1,40 @@
+---
+- name: disable screen lock (lock-on-suspend)
+  dconf:
+    key: '/apps/light-locker/lock-on-suspend'
+    value: 'false'
+    state: present
+  become_user: '{{ default_user }}'
+  when: no_screen_lock is defined and no_screen_lock
+
+- name: disable screen lock (late-locking)
+  dconf:
+    key: '/apps/light-locker/late-locking'
+    value: 'false'
+    state: present
+  become_user: '{{ default_user }}'
+  when: no_screen_lock is defined and no_screen_lock
+
+- name: disable screen lock (lock-after-screensaver)
+  dconf:
+    key: '/apps/light-locker/lock-after-screensaver'
+    value: 'uint32 0'
+    state: present
+  become_user: '{{ default_user }}'
+  when: no_screen_lock is defined and no_screen_lock
+
+- name: disable screen lock (lock-on-lid)
+  dconf:
+    key: '/apps/light-locker/lock-on-lid'
+    value: 'false'
+    state: present
+  become_user: '{{ default_user }}'
+  when: no_screen_lock is defined and no_screen_lock
+
+- name: disable screen lock (idle-hint)
+  dconf:
+    key: '/apps/light-locker/idle-hint'
+    value: 'false'
+    state: present
+  become_user: '{{ default_user }}'
+  when: no_screen_lock is defined and no_screen_lock
