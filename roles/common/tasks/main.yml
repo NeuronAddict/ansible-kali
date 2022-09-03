@@ -1,8 +1,16 @@
+- name: 'add group {{ default_user }}'
+  group:
+    name: '{{ default_user }}'
+    state: present
+    gid: 1001
+
 - name: 'add user {{ default_user }}'
   user:
     name: '{{ default_user }}'
     state: present
     create_home: true
+    uid: 1001
+    group: '{{ default_user }}'
     password: '{{ user_shadow }}'
     generate_ssh_key: true
     shell: /usr/bin/zsh
