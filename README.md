@@ -17,6 +17,7 @@ upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagran
 intnet_dhcp: true # use an intnet vbox with dhcp
 enabled_vpn: true # enable vpn at startup
 autologin: true # do not prompt login on lightdm
+no_screen_lock: true # disable lock screen (useful for vms with a complex password)
 ```
 
 ## vault
