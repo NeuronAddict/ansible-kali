@@ -2,10 +2,3 @@
   apt:
     name: sbd
     state: present
-
-- name: Ensure port 443 is open
-  ufw:
-    to_port: '443'
-    state: enabled
-    direction: in
-    rule: allow
