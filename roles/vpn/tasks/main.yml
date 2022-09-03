@@ -1,9 +1,15 @@
-- name: install openvpn
+- name: install openvpn and resolvconf
   apt:
-    name: openvpn
+    name: openvpn,resolvconf
     install_recommends: yes
     update_cache: yes
   when: vpn_name is defined and vpn_name != None
+
+- name: ensure resolvconf is started and enabled
+  systemd:
+    name: resolvconf
+    state: started
+    daemon_reload: true
 
 - name: copy default config
   template:

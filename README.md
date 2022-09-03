@@ -5,7 +5,7 @@
 create file config.yml on root.
 
 ```
-apt_proxy: host:port # leave blank to not use apt proxy
+apt_proxy: host:port # leave blank to not use apt proxy. if use vpn its better to user ipaddress (can interfere with vpn)
 default_user: me # default user, use this user to make kali fun things
 git_user: # your git user
 git_email: # git email
