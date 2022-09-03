@@ -17,6 +17,14 @@
     groups:
       - sudo
 
+- name: 'ensure /home/{{ default_user }} has correct owner'
+  file:
+    path: '/home/{{ default_user }}'
+    state: directory
+    owner: '{{ default_user }}'
+    group: '{{ default_user }}'
+    mode: '0700'
+
 - name: 'update user vagrant'
   user:
     name: vagrant
