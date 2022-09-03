@@ -1,0 +1,16 @@
+---
+- name: crate folder /etc/lightdm/lightdm.conf.d/
+  file:
+    path: '/etc/lightdm/lightdm.conf.d/'
+    mode: '0755'
+    state: directory
+  notify: restart lightdm
+
+- name: enable autologin
+  template:
+    src: 'files/60-autologin.conf.j2'
+    dest: '/etc/lightdm/lightdm.conf.d/60-autologin.conf'
+    mode: '0644'
+  notify: restart lightdm
+  when: autologin is defined and autologin
+

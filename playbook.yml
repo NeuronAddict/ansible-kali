@@ -13,6 +13,7 @@
     - role: 'ntp'
     - role: 'roles/common'
     - role: 'roles/no-screen-lock'
+    - role: 'roles/autologin'
     - role: 'roles/ufw'
     - role: 'roles/set_victim'
     - role: 'roles/locale'

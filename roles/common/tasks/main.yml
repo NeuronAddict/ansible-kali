@@ -80,15 +80,3 @@
     src: 'files/timeout.j2'
     dest: /etc/sudoers.d/timeout
     mode: '0400'
-
-- name: enable autologin
-  lineinfile:
-    path: /etc/lightdm/lightdm.conf
-    line: 'autologin-user={{ default_user }}'
-  when: autologin is defined and autologin
-
-- name: enable autologin
-  lineinfile:
-    path: /etc/lightdm/lightdm.conf
-    line: 'autologin-user-timeout=0'
-  when: autologin is defined and autologin
