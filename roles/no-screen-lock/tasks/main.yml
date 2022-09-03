@@ -1,4 +1,10 @@
 ---
+- name: install dconf-cli
+  apt:
+    name: dconf-cli
+    update_cache: yes
+    install_recommends: yes
+
 - name: disable screen lock (lock-on-suspend)
   dconf:
     key: '/apps/light-locker/lock-on-suspend'
