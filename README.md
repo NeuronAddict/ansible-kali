@@ -28,6 +28,9 @@ vagrant_shadow: # shadow hash for vagrant, avoid security risk (vagrant is sudo)
 user_shadow: # shadow hash for the user
 openvpn_username: # if vpn
 openvpn_password:  # if vpn
+censys_api_id:  # api id for censys (optional)
+censys_api_secret:  # api secret for censys (optional)
+shodan_api_key: # api ky for shodan (optional)
 ```
 
 To create user shadow from password :

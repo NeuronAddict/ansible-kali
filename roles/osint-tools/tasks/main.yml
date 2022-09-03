@@ -1,0 +1,28 @@
+---
+- name: install shodan client
+  apt:
+    name: python3-shodan
+    state: present
+
+- name: set shodan key
+  command:
+    argv:
+      - 'shodan'
+      - 'init'
+      - '{{ shodan_api_key }}'
+  when: shodan_api_key is defined
+  changed_when: false # TODO: change with shodan key
+
+- name: install censys client
+  apt:
+    name: python3-censys
+    state: present
+
+- name: configure censys api
+  blockinfile:
+    path: '/home/{{ default_user }}/.zshrc'
+    state: present
+    block: |
+      export CENSYS_API_ID={{ censys_api_id }}
+      export CENSYS_API_SECRET={{ censys_api_secret }}
+  when: censys_api_id is defined and censys_api_secret is defined

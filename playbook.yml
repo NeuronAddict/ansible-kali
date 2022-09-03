@@ -25,7 +25,7 @@
     - role: 'roles/vendor'
     - role: 'roles/tor'
     - role: 'discovery'
-
+    - role: 'osint-tools'
     - role: 'roles/git_sources'
     - role: 'roles/apache'
     - role: 'roles/peda'
