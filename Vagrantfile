@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "16000"
     vb.cpus = 4
 
-    vb.name = "kalilinux (vagrant) - " + vagrant_config['vm_name']
+    vb.name = vagrant_config['vm_name']
     vb.check_guest_additions = true
 
   end
