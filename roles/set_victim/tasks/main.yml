@@ -3,6 +3,7 @@
   lineinfile:
     path: '/home/{{ default_user }}/.zshrc'
     line: '[[ -f ~/.victim ]] && source ~/.victim'
+  become_user: '{{ default_user }}'
 
 - name: Ensure set_victim is in /usr/local/bin
   copy:
@@ -15,3 +16,4 @@
   lineinfile:
     path: '/home/{{ default_user }}/.zshrc'
     line: alias sv='function _(){ set_victim.sh $1 && source ~/.victim }; _'
+  become_user: '{{ default_user }}'
