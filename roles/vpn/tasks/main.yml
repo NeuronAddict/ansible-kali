@@ -1,21 +1,31 @@
-- name: install openvpn and resolvconf
+- name: install openvpn
   apt:
-    name: openvpn,resolvconf
+    name: openvpn,openvpn-systemd-resolved
     install_recommends: yes
     update_cache: yes
   when: vpn_name is defined and vpn_name != None
 
-- name: ensure resolvconf is started and enabled
-  systemd:
+- name: ensure resolvconf is absent
+  apt:
     name: resolvconf
-    state: started
-    daemon_reload: true
+    state: absent
 
 - name: copy default config
   template:
     src: files/etc/default/openvpn.j2
     dest: /etc/default/openvpn
   when: vpn_name is defined and vpn_name != None
+  notify: daemon reload
+
+- name: copy nofallback scripts
+  template:
+    src: 'files/etc/openvpn/{{ item }}'
+    dest: /etc/openvpn/
+    mode: '0755'
+  when: vpn_name is defined and vpn_name != None
+  loop:
+    - remove_fallback_conf
+    - set_no_fallback
   notify: daemon reload
 
 - name: copy auth file
