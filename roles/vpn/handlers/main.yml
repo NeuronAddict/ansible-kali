@@ -13,6 +13,14 @@
     daemon_reload: true
     masked: false
 
+- name: reload systemd-networkd
+  systemd:
+    name: systemd-networkd
+    enabled: true
+    state: restarted
+    daemon_reload: true
+    masked: false
+
 - name: daemon reload without restart
   systemd:
     name: openvpn

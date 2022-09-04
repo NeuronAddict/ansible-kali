@@ -18,6 +18,7 @@ intnet_dhcp: true # use an intnet vbox with dhcp
 enabled_vpn: true # enable vpn at startup
 autologin: true # do not prompt login on lightdm
 no_screen_lock: true # disable lock screen (useful for vms with a complex password)
+local_domains: mydmz mydomain # domains to resolve with local dns (to work with vpn)
 ```
 
 ## vault
