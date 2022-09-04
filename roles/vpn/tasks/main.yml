@@ -16,28 +16,18 @@
     enabled: false
     state: stopped
 
-- name: disallow dhcp resolv
-  copy:
-    dest: /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-    content: |
-      #!/bin/sh
-        make_resolv_conf(){
-        :
-      }
-    mode: '0755'
-
 - name: ensure systemd-resolved is started
   systemd:
     name: systemd-resolved
     state: started
     enabled: true
 
-- name: 'fallback to dns'
+- name: 'custom dns configuration'
   copy:
-    dest: /etc/systemd/resolved.conf.d/fallback_dns.conf
+    dest: /etc/systemd/resolved.conf.d/dns.conf
     content: |
       [Resolve]
-      FallbackDNS=1.1.1.1 9.9.9.9
+      FallbackDNS=9.9.9.9 1.1.1.1 149.112.112.112 1.0.0.1 2620:fe::fe 2606:4700:4700::1111 2620:fe::9 2606:4700:4700::1001
   notify: reload systemd-resolved
 
 - name: set link to /etc/resolv.conf
