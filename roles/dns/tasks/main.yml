@@ -24,6 +24,15 @@
       FallbackDNS={{ dns.fallback }}
   notify: reload systemd-resolved
 
+- name: 'set dnssec'
+  copy:
+    dest: /etc/systemd/resolved.conf.d/dnssec.conf
+    content: |
+      [Resolve]
+      DNSSEC=true
+  notify: reload systemd-resolved
+  when: dns.nosec is not defined and dns.nosec
+
 - name: 'use local network resolution'
   copy:
     dest: /etc/systemd/network/50-dhcp.network
