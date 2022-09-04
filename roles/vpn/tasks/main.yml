@@ -5,49 +5,6 @@
     update_cache: yes
   when: vpn_name is defined and vpn_name != None
 
-- name: ensure resolvconf is absent
-  apt:
-    name: resolvconf
-    state: absent
-
-- name: disable network-manager
-  systemd:
-    name: NetworkManager
-    enabled: false
-    state: stopped
-
-- name: ensure systemd-resolved is started
-  systemd:
-    name: systemd-resolved
-    state: started
-    enabled: true
-
-- name: 'custom dns configuration'
-  copy:
-    dest: /etc/systemd/resolved.conf.d/dns.conf
-    content: |
-      [Resolve]
-      FallbackDNS=
-  notify: reload systemd-resolved
-
-- name: 'use local network resolution'
-  copy:
-    dest: /etc/systemd/network/50-dhcp.network
-    content: |
-      [Match]
-      Name=eth0
-    
-      [Network]
-      DHCP=yes
-      Domains={{ local_domains }}
-  notify: reload systemd-networkd
-
-- name: set link to /etc/resolv.conf
-  file:
-    src: /run/systemd/resolve/stub-resolv.conf
-    dest: /etc/resolv.conf
-    state: link
-
 - name: copy default config
   template:
     src: files/etc/default/openvpn.j2
