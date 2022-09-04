@@ -5,6 +5,14 @@
     - daemon reload without restart
     - daemon reload and restart
 
+- name: reload systemd-resolved
+  systemd:
+    name: systemd-resolved
+    enabled: true
+    state: restarted
+    daemon_reload: true
+    masked: false
+
 - name: daemon reload without restart
   systemd:
     name: openvpn

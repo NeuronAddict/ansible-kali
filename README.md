@@ -48,3 +48,7 @@ If you use vendor products put it on roles/vendor/
 ## stranges chars
 
 https://github.com/Guake/guake/issues/877
+
+## vpn - systemd
+https://wiki.archlinux.org/title/Systemd-resolved#Fallback
+https://www.cyberciti.biz/faq/dhclient-etcresolvconf-hooks/

@@ -10,22 +10,47 @@
     name: resolvconf
     state: absent
 
+- name: disable network-manager
+  systemd:
+    name: NetworkManager
+    enabled: false
+    state: stopped
+
+- name: disallow dhcp resolv
+  copy:
+    dest: /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+    content: |
+      #!/bin/sh
+        make_resolv_conf(){
+        :
+      }
+    mode: '0755'
+
+- name: ensure systemd-resolved is started
+  systemd:
+    name: systemd-resolved
+    state: started
+    enabled: true
+
+- name: 'fallback to dns'
+  copy:
+    dest: /etc/systemd/resolved.conf.d/fallback_dns.conf
+    content: |
+      [Resolve]
+      FallbackDNS=1.1.1.1 9.9.9.9
+  notify: reload systemd-resolved
+
+- name: set link to /etc/resolv.conf
+  file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+
 - name: copy default config
   template:
     src: files/etc/default/openvpn.j2
     dest: /etc/default/openvpn
   when: vpn_name is defined and vpn_name != None
-  notify: daemon reload
-
-- name: copy nofallback scripts
-  template:
-    src: 'files/etc/openvpn/{{ item }}'
-    dest: /etc/openvpn/
-    mode: '0755'
-  when: vpn_name is defined and vpn_name != None
-  loop:
-    - remove_fallback_conf
-    - set_no_fallback
   notify: daemon reload
 
 - name: copy auth file

@@ -1,8 +1,0 @@
-#! /bin/bash
-
-cat << EOT  > /etc/systemd/resolved.conf.d/fallback_dns.conf
-[Resolve]
-FallbackDNS=
-EOT
-
-systemctl restart systemd-resolved
