@@ -19,6 +19,11 @@ enabled_vpn: true # enable vpn at startup
 autologin: true # do not prompt login on lightdm
 no_screen_lock: true # disable lock screen (useful for vms with a complex password)
 local_domains: mydmz mydomain # domains to resolve with local dns (to work with vpn). This can lead to dns leak.
+dns:
+  fallback: 8.8.8.8 9.9.9.9 # fallback dns servers
+  hosts: | # config to add on /etc/hosts
+    192.168.1.66 awesome.local
+  nosec: false # set to true to disable dnssec
 ```
 
 ## vault
