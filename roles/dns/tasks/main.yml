@@ -10,6 +10,12 @@
     enabled: false
     state: stopped
 
+- name: Ensure /etc/systemd/resolved.conf.d/ is present
+  file:
+    path: /etc/systemd/resolved.conf.d/
+    state: directory
+    mode: '0755'
+
 - name: ensure systemd-resolved is started
   systemd:
     name: systemd-resolved
@@ -23,6 +29,7 @@
       [Resolve]
       FallbackDNS={{ dns.fallback }}
   notify: reload systemd-resolved
+  when: dns.fallback is defined
 
 - name: 'set dnssec'
   copy:
@@ -31,7 +38,7 @@
       [Resolve]
       DNSSEC=true
   notify: reload systemd-resolved
-  when: dns.nosec is not defined and dns.nosec
+  when: dns.nosec is not defined or not dns.nosec
 
 - name: 'use local network resolution'
   copy:
@@ -51,8 +58,10 @@
     src: /run/systemd/resolve/stub-resolv.conf
     dest: /etc/resolv.conf
     state: link
+    force: true
 
 - name: add hosts config
   blockinfile:
     path: /etc/hosts
     block: '{{ dns.hosts }}'
+  when: dns.hosts is defined
