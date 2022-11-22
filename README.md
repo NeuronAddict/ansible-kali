@@ -1,5 +1,38 @@
 # vagrant kali with ansible
 
+Configure a kali vagrant vm and make it ready at startup.
+
+## How to
+
+```
+git clone https://github.com/NeuronAddict/ansible-kali
+cd ansible-kali
+cp config-example.yml config.yml
+nano config.yml # see bellow to config
+vagrant up
+echo '\o/'
+```
+
+- VM can be destroyed and recreated with all stuff.
+- No need to reconfigure your kali box (install, parameters, ...)
+- Optional Autologin
+- guake terminal configured
+- useful for CTF (with vpn) or audit (with vpn + dns)
+- git
+- apt proxy for upgrades 
+- auto upgrades
+- many tools installed : discovery, apache for serve malware, tor
+- no screen lock option
+- osint tools
+- ntp
+- firewall
+- ...
+
+## issues
+
+- https://github.com/NeuronAddict/ansible-kali/issues
+
+
 ## config
 
 create file config.yml on root.
@@ -11,14 +44,14 @@ git_user: # your git user
 git_email: # git email
 timezone: Europe/Paris # timezone
 vpn_ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
-vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in roles/vpn/files/etc/openvpn with your openvpn conf
+vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in openvpn with your openvpn conf
 vm_name: 'my-awesome-vm' # name of the vm
-upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible !
+upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible. box is automatically upgraded when run with unattended upgrades.
 intnet_dhcp: true # use an intnet vbox with dhcp
 enabled_vpn: true # enable vpn at startup
 autologin: true # do not prompt login on lightdm
 no_screen_lock: true # disable lock screen (useful for vms with a complex password)
-local_domains: mydmz mydomain # domains to resolve with local dns (to work with vpn). This can lead to dns leak.
+local_domains: mydmz mydomain # domains to resolve with local dns (to work with vpn). Be carefaul, this can lead to dns leak if you resolve a public domain.
 dns:
   fallback: 8.8.8.8 9.9.9.9 # fallback dns servers
   hosts: | # config to add on /etc/hosts
