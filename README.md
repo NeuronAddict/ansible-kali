@@ -61,7 +61,7 @@ dns:
 
 ## vault
 
-create an ansible vault.yml with the following content
+You can set this var on config.yml, use a partial vault to be secure.
 ```
 vagrant_shadow: # shadow hash for vagrant, avoid security risk (vagrant is sudo)
 user_shadow: # shadow hash for the user

@@ -70,10 +70,10 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.vm.provision "ansible", run: "always" do |ansible|
+  config.vm.provision "ansible_local", run: "always" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "playbook.yml"
-      ansible.vault_password_file = ".secret/vault-password.txt"
+      # ansible.vault_password_file = ".secret/vault-password.txt"
       ansible.extra_vars = {
         "ansible_python_interpreter": "/usr/bin/python3"
       }
