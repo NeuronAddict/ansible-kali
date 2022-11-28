@@ -11,6 +11,7 @@
     - role: 'dns'
     - role: 'roles/local_apt_proxy'
     - role: 'ntp'
+    - role: 'zsh'
     - role: 'roles/common'
     - role: 'roles/no-screen-lock'
     - role: 'roles/autologin'
