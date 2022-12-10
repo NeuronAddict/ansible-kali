@@ -17,54 +17,77 @@
     masked: true
   when: "systemd_resolved.stat.exists"
 
-- name: ensure NetworkManager is installed
+- name: Create /etc/systemd/resolved.conf.d
+  file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    mode: '0755'
+
+- name: Disable systemd-resolved server
+  copy:
+    dest: /etc/systemd/resolved.conf.d/noresolved.conf
+    content: |
+      [Resolve]
+      DNSStubListener=no
+    mode: '0444'
+
+- name: Prevent dhcp to modify /etc/resolv.conf
+  copy:
+    dest: /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+    content: |
+      #!/bin/sh
+      make_resolv_conf() {
+        :
+      }
+    mode: '0755'
+
+- name: ensure NetworkManager and dnsmasq are installed
   apt:
-    name: network-manager,dnsmasq-base
+    name: network-manager,dnsmasq
     state: present
 
-- name: Set dns mask config for NetworkManager
+- name: Disable dns config for NetworkManager
   copy:
-    dest: /etc/NetworkManager/conf.d/00-dnsmasq.conf
+    dest: /etc/NetworkManager/conf.d/00-nodns.conf
     content: |
       [main]
-      dns=dnsmasq
-      rc-manager=file
+      dns=no
     mode: '0644'
   notify:
-    - Reload NetworkManager
+    - Reload dnsmasq
 
-- name: 'Enable dnssec configuration'
+- name: Enable dnssec configuration
   copy:
-    dest: /etc/NetworkManager/dnsmasq.d/30-dnssec.conf
+    dest: /etc/dnsmasq.d/30-dnssec.conf
     content: |
       dnssec
   notify:
-    - Reload NetworkManager
+    - Reload dnsmasq
   when: dns.nosec is not defined or not dns.nosec
 
-- name: 'Disallow custom dnssec configuration'
+- name: Disallow custom dnssec configuration
   file:
-    path: /etc/NetworkManager/dnsmasq.d/30-dnssec.conf
+    path: /etc/dnsmasq.d/30-dnssec.conf
     state: absent
   notify:
-    - Reload NetworkManager
+    - Reload dnsmasq
   when: dns.nosec is defined and dns.nosec
 
-- name: 'fallback dns configuration'
+- name: fallback dns configuration
   template:
     src: templates/upstream.conf.j2
-    dest: /etc/NetworkManager/dnsmasq.d/50-upstream.conf
+    dest: /etc/dnsmasq.d/50-upstream.conf
   notify:
-    - Reload NetworkManager
+    - Reload dnsmasq
   when: dns.upstream is defined
 
-- name: 'fallback dns configuration'
+- name: Set add hosts on dnsmasq
   copy:
-    dest: /etc/NetworkManager/dnsmasq.d/hosts.conf
+    dest: /etc/dnsmasq.d/hosts.conf
     content: |
       addn-hosts=/etc/hosts.custom
   notify:
-    - Reload NetworkManager
+    - Reload dnsmasq
   when: dns.fallback is defined
 
 - name: add hosts config
@@ -81,3 +104,11 @@
 
 - name: flush handlers
   meta: flush_handlers
+
+- name: Set /etc/resolv.conf
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      # Generated via ansible provision
+      nameserver 127.0.0.1
+    mode: '0444'
