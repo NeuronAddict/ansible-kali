@@ -5,13 +5,10 @@
     state: present
 
 - name: set shodan key
-  command:
-    argv:
-      - 'shodan'
-      - 'init'
-      - '{{ shodan_api_key }}'
+  copy:
+    dest: '/home/{{ default_user }}/.config/shodan/api_key'
+    content: '{{ shodan_api_key }}'
   when: shodan_api_key is defined
-  changed_when: false # TODO: change with shodan key
 
 - name: install censys client
   apt:

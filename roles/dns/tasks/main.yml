@@ -4,64 +4,63 @@
     name: resolvconf
     state: absent
 
-- name: disable network-manager
+- name: ensure NetworkManager is installed
+  apt:
+    name: network-manager
+    state: present
+
+- name: Enable network-manager
   systemd:
     name: NetworkManager
-    enabled: false
-    state: stopped
-
-- name: Ensure /etc/systemd/resolved.conf.d/ is present
-  file:
-    path: /etc/systemd/resolved.conf.d/
-    state: directory
-    mode: '0755'
-
-- name: ensure systemd-resolved is started
-  systemd:
-    name: systemd-resolved
-    state: started
     enabled: true
+    state: started
 
-- name: 'custom dns configuration'
-  copy:
-    dest: /etc/systemd/resolved.conf.d/dns.conf
-    content: |
-      [Resolve]
-      FallbackDNS={{ dns.fallback }}
-  notify: reload systemd-resolved
-  when: dns.fallback is defined
+- name: make NetworkManager symlink
+  file:
+    src: /run/NetworkManager/resolv.conf
+    dest: /etc/revolv.conf
+    state: link
+  notify:
+    - Restart NetworkManager
 
-- name: 'set dnssec'
+- name: Ensure /etc/NetworkManager is present
   copy:
-    dest: /etc/systemd/resolved.conf.d/dnssec.conf
+    dest: /etc/NetworkManager/conf.d/00-dnsmasq.conf
     content: |
-      [Resolve]
-      DNSSEC=true
-  notify: reload systemd-resolved
+      [main]
+      dns=dnsmasq
+      rc-manager=symlink
+    mode: '0755'
+  notify:
+    - Restart NetworkManager
+
+- name: 'custom dnssec configuration'
+  template:
+    src: templates/dnssec.conf.j2
+    dest: /etc/NetworkManager/dnsmasq.conf.d/dnssec.conf
+  notify:
+    - Restart NetworkManager
   when: dns.nosec is not defined or not dns.nosec
 
-- name: 'use local network resolution'
-  copy:
-    dest: /etc/systemd/network/50-dhcp.network
-    content: |
-      [Match]
-      Name=eth0
-      
-      [Network]
-      DHCP=yes
-      Domains={{ local_domains }}
-  notify: reload systemd-networkd
-  when: local_domains is defined and local_domains
+- name: 'fallback dns configuration'
+  template:
+    src: templates/fallback.conf.j2
+    dest: /etc/NetworkManager/dnsmasq.conf.d/fallback.conf
+  notify:
+    - Restart NetworkManager
+  when: dns.fallback is defined
 
-- name: set link to /etc/resolv.conf
-  file:
-    src: /run/systemd/resolve/stub-resolv.conf
-    dest: /etc/resolv.conf
-    state: link
-    force: true
+- name: 'fallback dns configuration'
+  copy:
+    dest: /etc/NetworkManager/dnsmasq.conf.d/hosts.conf
+    content: |
+      addn-hosts=/etc/hosts.custom
+  notify:
+    - Restart NetworkManager
+  when: dns.fallback is defined
 
 - name: add hosts config
   blockinfile:
-    path: /etc/hosts
+    path: /etc/hosts.custom
     block: '{{ dns.hosts }}'
   when: dns.hosts is defined
