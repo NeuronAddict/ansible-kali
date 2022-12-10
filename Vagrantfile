@@ -65,6 +65,10 @@ Vagrant.configure("2") do |config|
     vb.name = vagrant_config['vm_name']
     vb.check_guest_additions = true
 
+    vb.auto_nat_dns_proxy = false
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+
   end
   #
   # View the documentation for the provider you are using for more
