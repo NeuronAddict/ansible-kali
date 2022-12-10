@@ -1,66 +1,83 @@
 ---
-- name: ensure resolvconf is absent
+- name: ensure resolvconf and dnsmasq is absent
   apt:
-    name: resolvconf
+    name: resolvconf,dnsmasq
     state: absent
+
+- name: Check if systemd-resolved exists
+  stat:
+    path: /lib/systemd/systemd-resolved
+  register: systemd_resolved
+
+- name: Enable systemd-resolved is disabled
+  systemd:
+    name: systemd-resolved
+    enabled: false
+    state: stopped
+    masked: true
+  when: "systemd_resolved.stat.exists"
 
 - name: ensure NetworkManager is installed
   apt:
-    name: network-manager
+    name: network-manager,dnsmasq-base
     state: present
 
-- name: Enable network-manager
-  systemd:
-    name: NetworkManager
-    enabled: true
-    state: started
-
-- name: make NetworkManager symlink
-  file:
-    src: /run/NetworkManager/resolv.conf
-    dest: /etc/revolv.conf
-    state: link
-  notify:
-    - Restart NetworkManager
-
-- name: Ensure /etc/NetworkManager is present
+- name: Set dns mask config for NetworkManager
   copy:
     dest: /etc/NetworkManager/conf.d/00-dnsmasq.conf
     content: |
       [main]
       dns=dnsmasq
-      rc-manager=symlink
-    mode: '0755'
+      rc-manager=file
+    mode: '0644'
   notify:
-    - Restart NetworkManager
+    - Reload NetworkManager
 
-- name: 'custom dnssec configuration'
-  template:
-    src: templates/dnssec.conf.j2
-    dest: /etc/NetworkManager/dnsmasq.conf.d/dnssec.conf
+- name: 'Enable dnssec configuration'
+  copy:
+    dest: /etc/NetworkManager/dnsmasq.d/30-dnssec.conf
+    content: |
+      dnssec
   notify:
-    - Restart NetworkManager
+    - Reload NetworkManager
   when: dns.nosec is not defined or not dns.nosec
+
+- name: 'Disallow custom dnssec configuration'
+  file:
+    path: /etc/NetworkManager/dnsmasq.d/30-dnssec.conf
+    state: absent
+  notify:
+    - Reload NetworkManager
+  when: dns.nosec is defined and dns.nosec
 
 - name: 'fallback dns configuration'
   template:
-    src: templates/fallback.conf.j2
-    dest: /etc/NetworkManager/dnsmasq.conf.d/fallback.conf
+    src: templates/upstream.conf.j2
+    dest: /etc/NetworkManager/dnsmasq.d/50-upstream.conf
   notify:
-    - Restart NetworkManager
-  when: dns.fallback is defined
+    - Reload NetworkManager
+  when: dns.upstream is defined
 
 - name: 'fallback dns configuration'
   copy:
-    dest: /etc/NetworkManager/dnsmasq.conf.d/hosts.conf
+    dest: /etc/NetworkManager/dnsmasq.d/hosts.conf
     content: |
       addn-hosts=/etc/hosts.custom
   notify:
-    - Restart NetworkManager
+    - Reload NetworkManager
   when: dns.fallback is defined
 
 - name: add hosts config
-  blockinfile:
-    path: /etc/hosts.custom
-    block: '{{ dns.hosts }}'
+  copy:
+    dest: /etc/hosts.custom
+    content: '{{ dns.hosts }}'
   when: dns.hosts is defined
+
+- name: Ensure network-manager is started
+  systemd:
+    name: NetworkManager
+    enabled: true
+    state: started
+
+- name: flush handlers
+  meta: flush_handlers
