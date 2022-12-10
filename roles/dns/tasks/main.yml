@@ -1,7 +1,7 @@
 ---
 - name: ensure resolvconf and dnsmasq is absent
   apt:
-    name: resolvconf,dnsmasq
+    name: resolvconf
     state: absent
 
 - name: Check if systemd-resolved exists
