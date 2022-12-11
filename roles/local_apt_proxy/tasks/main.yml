@@ -8,5 +8,5 @@
   file:
     path: /etc/apt/apt.conf.d/05Proxy
     state: absent
-  when: 'apt_proxy is not defined or apt_proxy != None'
+  when: "apt_proxy is not defined or apt_proxy == None or apt_proxy == ''"
 
