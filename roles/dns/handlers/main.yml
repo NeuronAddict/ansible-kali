@@ -1,0 +1,16 @@
+---
+- name: Reload NetworkManager
+  systemd:
+    name: NetworkManager
+    state: reloaded
+    daemon_reload: true
+    enabled: true
+    masked: false
+
+- name: Reload dnsmasq
+  systemd:
+    name: dnsmasq
+    state: restarted
+    daemon_reload: true
+    enabled: true
+    masked: false

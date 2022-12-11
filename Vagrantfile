@@ -65,15 +65,19 @@ Vagrant.configure("2") do |config|
     vb.name = vagrant_config['vm_name']
     vb.check_guest_additions = true
 
+    vb.auto_nat_dns_proxy = false
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+
   end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.vm.provision "ansible", run: "always" do |ansible|
+  config.vm.provision "ansible_local", run: "always" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "playbook.yml"
-      ansible.vault_password_file = ".secret/vault-password.txt"
+      # ansible.vault_password_file = ".secret/vault-password.txt"
       ansible.extra_vars = {
         "ansible_python_interpreter": "/usr/bin/python3"
       }

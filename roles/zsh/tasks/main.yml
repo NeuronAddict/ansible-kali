@@ -1,0 +1,12 @@
+- name: Ensure zsh is installed
+  apt:
+    name: zsh
+    update_cache: true
+
+- name: init zsh if not exists
+  copy:
+    src: 'files/zshrc'
+    force: no
+    dest: '/home/{{ default_user }}/.zshrc'
+    owner: '{{ default_user }}'
+    mode: '0644'

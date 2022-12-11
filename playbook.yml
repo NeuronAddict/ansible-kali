@@ -5,14 +5,14 @@
   remote_user: vagrant
   become: yes
   vars_files:
-    - vault.yml
     - config.yml
 
   roles:
-    - role: 'dns'
     - role: 'roles/local_apt_proxy'
+    - role: 'dns'
     - role: 'ntp'
     - role: 'roles/common'
+    - role: 'zsh'
     - role: 'roles/no-screen-lock'
     - role: 'roles/autologin'
     - role: 'roles/ufw'

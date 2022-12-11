@@ -1,67 +1,122 @@
 ---
-- name: ensure resolvconf is absent
+- name: ensure resolvconf and dnsmasq is absent
   apt:
     name: resolvconf
     state: absent
 
-- name: disable network-manager
+- name: Check if systemd-resolved exists
+  stat:
+    path: /lib/systemd/systemd-resolved
+  register: systemd_resolved
+
+- name: Enable systemd-resolved is disabled
   systemd:
-    name: NetworkManager
+    name: systemd-resolved
     enabled: false
     state: stopped
+    masked: true
+  when: "systemd_resolved.stat.exists"
 
-- name: Ensure /etc/systemd/resolved.conf.d/ is present
+- name: Create /etc/systemd/resolved.conf.d
   file:
-    path: /etc/systemd/resolved.conf.d/
+    path: /etc/systemd/resolved.conf.d
     state: directory
     mode: '0755'
 
-- name: ensure systemd-resolved is started
-  systemd:
-    name: systemd-resolved
-    state: started
-    enabled: true
-
-- name: 'custom dns configuration'
+- name: Disable systemd-resolved server
   copy:
-    dest: /etc/systemd/resolved.conf.d/dns.conf
+    dest: /etc/systemd/resolved.conf.d/noresolved.conf
     content: |
       [Resolve]
-      FallbackDNS={{ dns.fallback }}
-  notify: reload systemd-resolved
-  when: dns.fallback is defined
+      DNSStubListener=no
+    mode: '0444'
 
-- name: 'set dnssec'
+- name: Prevent dhcp to modify /etc/resolv.conf
   copy:
-    dest: /etc/systemd/resolved.conf.d/dnssec.conf
+    dest: /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
     content: |
-      [Resolve]
-      DNSSEC=true
-  notify: reload systemd-resolved
+      #!/bin/sh
+      make_resolv_conf() {
+        :
+      }
+    mode: '0755'
+
+- name: ensure NetworkManager and dnsmasq are installed
+  apt:
+    name: network-manager,dnsmasq
+    state: present
+
+- name: Disable dns config for NetworkManager
+  copy:
+    dest: /etc/NetworkManager/conf.d/00-nodns.conf
+    content: |
+      [main]
+      dns=none
+    mode: '0644'
+  notify:
+    - Reload dnsmasq
+
+- name: Enable dnssec configuration
+  copy:
+    dest: /etc/dnsmasq.d/30-dnssec.conf
+    content: |
+      dnssec
+  notify:
+    - Reload dnsmasq
   when: dns.nosec is not defined or not dns.nosec
 
-- name: 'use local network resolution'
-  copy:
-    dest: /etc/systemd/network/50-dhcp.network
-    content: |
-      [Match]
-      Name=eth0
-      
-      [Network]
-      DHCP=yes
-      Domains={{ local_domains }}
-  notify: reload systemd-networkd
-  when: local_domains is defined and local_domains
-
-- name: set link to /etc/resolv.conf
+- name: Disallow custom dnssec configuration
   file:
-    src: /run/systemd/resolve/stub-resolv.conf
-    dest: /etc/resolv.conf
-    state: link
-    force: true
+    path: /etc/dnsmasq.d/30-dnssec.conf
+    state: absent
+  notify:
+    - Reload dnsmasq
+  when: dns.nosec is defined and dns.nosec
+
+- name: Set Upstream dns configuration
+  template:
+    src: templates/upstream.conf.j2
+    dest: /etc/dnsmasq.d/50-upstream.conf
+  notify:
+    - Reload dnsmasq
+  when: dns.upstream is defined
+
+- name: Set add hosts on dnsmasq
+  copy:
+    dest: /etc/dnsmasq.d/hosts.conf
+    content: |
+      addn-hosts=/etc/hosts.custom
+  notify:
+    - Reload dnsmasq
+  when: dns.fallback is defined
+
+- name: Set add hosts on dnsmasq
+  copy:
+    dest: /etc/dnsmasq.d/hosts.conf
+    content: |
+      no-resolv
+  notify:
+    - Reload dnsmasq
 
 - name: add hosts config
-  blockinfile:
-    path: /etc/hosts
-    block: '{{ dns.hosts }}'
+  copy:
+    dest: /etc/hosts.custom
+    content: '{{ dns.hosts }}'
   when: dns.hosts is defined
+
+- name: Ensure network-manager is started
+  systemd:
+    name: NetworkManager
+    enabled: true
+    state: started
+
+- name: flush handlers
+  meta: flush_handlers
+
+- name: Set /etc/resolv.conf
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      # Generated via ansible provision
+      nameserver 127.0.0.1
+    mode: '0444'

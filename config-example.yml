@@ -1,10 +1,29 @@
-apt_proxy: # leave blank to not use apt proxy
-default_user: me # default user, use this user to make kali fun things
+apt_proxy: host:port # leave blank to not use apt proxy. if use vpn its better to user ipaddress (can interfere with vpn)
+default_user: me # default user, you will login with this user
 git_user: # your git user
 git_email: # git email
 timezone: Europe/Paris # timezone
 vpn_ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
-vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in roles/vpn/files/etc/openvpn with your openvpn conf
+vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in openvpn with your openvpn conf
 vm_name: 'my-awesome-vm' # name of the vm
-upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible !
-intnet_dhcp: false # use an intnet vbox with dhcp
+bridge_interface: # set this to make a bridged network
+upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible. box is automatically upgraded when run with unattended upgrades.
+intnet_dhcp: true # use an intnet vbox with dhcp
+enabled_vpn: true # enable vpn at startup
+autologin: true # do not prompt login on lightdm
+no_screen_lock: true # disable lock screen (useful for vms with a complex password)
+dns:
+  nosec: false # set to true to disable dnssec
+  upstream: 10.0.2.3 # keep this ip to use dns from your local machine, set to another to use aother dns (useful for privacy)
+  hosts: |
+    127.0.0.1 mydomain
+
+# Use vault for this
+# https://docs.ansible.com/ansible/2.4/vault.html#use-encrypt-string-to-create-encrypted-variables-to-embed-in-yaml
+vagrant_shadow:  # use python hash.py to encrypt vagrant password
+user_shadow:  # use python hash.py to encrypt user password
+openvpn_username: # if vpn
+openvpn_password:  # if vpn
+censys_api_id:  # api id for censys (optional)
+censys_api_secret:  # api secret for censys (optional)
+shodan_api_key: # api ky for shodan (optional)

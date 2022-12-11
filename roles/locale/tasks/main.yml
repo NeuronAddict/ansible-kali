@@ -13,7 +13,7 @@
     src: files/keyboard
     dest: /etc/default/
   notify:
-    - reboot
+    - Restart lightdm
 
 - name: Flush handlers
   meta: flush_handlers
