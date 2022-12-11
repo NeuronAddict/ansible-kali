@@ -3,13 +3,13 @@
     name: openvpn,openvpn-systemd-resolved
     install_recommends: yes
     update_cache: yes
-  when: vpn_name is defined and vpn_name != None
+  when: vpn.name is defined and vpn.name != None
 
 - name: copy default config
   template:
     src: files/etc/default/openvpn.j2
     dest: /etc/default/openvpn
-  when: vpn_name is defined and vpn_name != None
+  when: vpn.name is defined and vpn.name != None
   notify: daemon reload
 
 - name: copy auth file
@@ -17,7 +17,7 @@
     src: templates/auth.txt.j2
     dest: /etc/openvpn/auth.txt
     mode: '0400'
-  when: vpn_name is defined and vpn_name != None
+  when: vpn.name is defined and vpn.name != None
   notify: daemon reload
 
 - name: add vpn file
@@ -25,7 +25,7 @@
     src: 'openvpn/'
     dest: /etc/openvpn/
     mode: '0400'
-  when: vpn_name is defined and vpn_name != None
+  when: vpn.name is defined and vpn.name != None
   notify: daemon reload
 
 - name: disable openvpn
@@ -33,11 +33,11 @@
     name: openvpn
     enabled: false
     state: stopped
-  when: vpn_name is defined and vpn_name != None and (enabled_vpn is not defined or not enabled_vpn)
+  when: vpn.name is defined and vpn.name != None and (vpn.enabled is not defined or not vpn.enabled)
 
 - name: enable openvpn
   systemd:
     name: openvpn
     enabled: true
     state: started
-  when: vpn_name is defined and vpn_name != None and enabled_vpn is defined and enabled_vpn
+  when: vpn.name is defined and vpn.name != None and vpn.enabled is defined and vpn.enabled

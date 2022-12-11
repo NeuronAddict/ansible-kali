@@ -26,5 +26,5 @@
 - name: set ip on zsh
   lineinfile:
     path: '/home/{{ default_user }}/.zshrc'
-    line: "export IP=$(ip address show dev tun0 2>/dev/null | grep {{ vpn_ip_pattern }} | awk '{print $2}' | cut -f 1 -d '/')"
-  when: vpn_ip_pattern is defined and vpn_ip_pattern != None
+    line: "export IP=$(ip address show dev tun0 2>/dev/null | grep {{ vpn.ip_pattern }} | awk '{print $2}' | cut -f 1 -d '/')"
+  when: vpn.ip_pattern is defined and vpn.ip_pattern != None

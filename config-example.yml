@@ -1,15 +1,20 @@
-apt_proxy: host:port # leave blank to not use apt proxy. if use vpn you can use ipaddress. Comment to disallow.
+apt_proxy: host:port # leave blank to not use apt proxy. if use vpn you can use ipaddress or specify host in dns.hosts. Comment to disallow.
 default_user: me # default user, you will login with this user
 git_user: # your git user
 git_email: # git email
 timezone: Europe/Paris # timezone
-vpn_ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
-vpn_name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn_name }}.conf in openvpn with your openvpn conf
+vpn:
+  ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
+  name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn.name }}.conf in openvpn with your openvpn conf
+  enabled: true # enable vpn at startup
+  openvpn_username: # if vpn
+  openvpn_password:  # if vpn
+
 vm_name: 'my-awesome-vm' # name of the vm
 bridge_interface: # set this to make a bridged network
 upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible. box is automatically upgraded when run with unattended upgrades.
 intnet_dhcp: true # use an intnet vbox with dhcp
-enabled_vpn: true # enable vpn at startup
+
 autologin: true # do not prompt login on lightdm
 no_screen_lock: true # disable lock screen (useful for vms with a complex password)
 dns:
@@ -22,8 +27,7 @@ dns:
 # https://docs.ansible.com/ansible/2.4/vault.html#use-encrypt-string-to-create-encrypted-variables-to-embed-in-yaml
 vagrant_shadow:  # use python hash.py to encrypt vagrant password
 user_shadow:  # use python hash.py to encrypt user password
-openvpn_username: # if vpn
-openvpn_password:  # if vpn
+
 censys_api_id:  # api id for censys (optional)
 censys_api_secret:  # api secret for censys (optional)
 shodan_api_key: # api ky for shodan (optional)
