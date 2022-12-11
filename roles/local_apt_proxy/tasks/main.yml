@@ -2,4 +2,11 @@
   template:
     src: files/05Proxy.j2
     dest: /etc/apt/apt.conf.d/05Proxy
-  when: 'apt_proxy != None'
+  when: 'apt_proxy is defined and apt_proxy != None'
+
+- name: Unset apt proxy
+  file:
+    path: /etc/apt/apt.conf.d/05Proxy
+    state: absent
+  when: 'apt_proxy is not defined or apt_proxy != None'
+

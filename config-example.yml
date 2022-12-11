@@ -1,4 +1,4 @@
-apt_proxy: host:port # leave blank to not use apt proxy. if use vpn its better to user ipaddress (can interfere with vpn)
+apt_proxy: host:port # leave blank to not use apt proxy. if use vpn you can use ipaddress. Comment to disallow.
 default_user: me # default user, you will login with this user
 git_user: # your git user
 git_email: # git email
