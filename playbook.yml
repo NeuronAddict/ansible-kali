@@ -8,8 +8,8 @@
     - config.yml
 
   roles:
-    - role: 'dns'
     - role: 'roles/local_apt_proxy'
+    - role: 'dns'
     - role: 'ntp'
     - role: 'roles/common'
     - role: 'zsh'
