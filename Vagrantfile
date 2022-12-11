@@ -59,10 +59,10 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
 
     vb.gui = true
-    vb.memory = "16000"
-    vb.cpus = 4
+    vb.memory = vagrant_config['vm']['memory']
+    vb.cpus = vagrant_config['vm']['cpus']
 
-    vb.name = vagrant_config['vm_name']
+    vb.name = vagrant_config['vm']['name']
     vb.check_guest_additions = true
 
     vb.auto_nat_dns_proxy = false

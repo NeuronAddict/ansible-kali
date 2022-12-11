@@ -10,7 +10,10 @@ vpn:
   openvpn_username: # if vpn
   openvpn_password:  # if vpn
 
-vm_name: 'my-awesome-vm' # name of the vm
+vm:
+  name: 'my-awesome-vm' # name of the vm
+  cpus: 2 # cpu for vm
+  memory: 6000 # memory in MB
 bridge_interface: # set this to make a bridged network
 upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible. box is automatically upgraded when run with unattended upgrades.
 intnet_dhcp: true # use an intnet vbox with dhcp
