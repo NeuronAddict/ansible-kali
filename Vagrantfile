@@ -70,11 +70,14 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
 
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
-  config.vm.provision "ansible_local", run: "always" do |ansible|
+  if vagrant_config['vm']['local_ansible']
+    provider = "ansible_local"
+  else
+    provider = "ansible"
+  end
+
+  config.vm.provision provider do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "playbook.yml"
       # ansible.vault_password_file = ".secret/vault-password.txt"
