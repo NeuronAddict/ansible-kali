@@ -8,13 +8,17 @@ Configure a kali vagrant vm and make it ready at startup.
 git clone https://github.com/NeuronAddict/ansible-kali
 cd ansible-kali
 cp config-example.yml config.yml
+# configure your mv
 nano config.yml # see bellow to config
+# generate a vault password
+mkdir .secret && chmod 700 .secret && touch .secret/vault.txt && chmod 600 .secret/vault.txt && pwgen 30 1 > .secret/vault.txt
+# if you don't want use vault, comment or delete file ansible.cfg
 vagrant up
-echo '\o/'
+# '\o/'
 ```
 
 - VM can be destroyed and recreated with all stuff.
-- No need to reconfigure your kali box (install, parameters, ...)
+- reconfigure your kali box (install, parameters, ...) with vagrant provision
 - Optional Autologin
 - guake terminal configured
 - useful for CTF (with vpn) or audit (with vpn + dns)
