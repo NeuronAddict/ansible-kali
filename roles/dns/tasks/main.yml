@@ -1,35 +1,13 @@
 ---
 - name: ensure resolvconf and dnsmasq is absent
   apt:
-    name: resolvconf
+    name: resolvconf,systemd-resolved
     state: absent
 
-- name: Check if systemd-resolved exists
-  stat:
-    path: /lib/systemd/systemd-resolved
-  register: systemd_resolved
-
-- name: Enable systemd-resolved is disabled
-  systemd:
+- name: Prevent systemd-resolved from being installed
+  ansible.builtin.dpkg_selections:
     name: systemd-resolved
-    enabled: false
-    state: stopped
-    masked: true
-  when: "systemd_resolved.stat.exists"
-
-- name: Create /etc/systemd/resolved.conf.d
-  file:
-    path: /etc/systemd/resolved.conf.d
-    state: directory
-    mode: '0755'
-
-- name: Disable systemd-resolved server
-  copy:
-    dest: /etc/systemd/resolved.conf.d/noresolved.conf
-    content: |
-      [Resolve]
-      DNSStubListener=no
-    mode: '0444'
+    selection: hold
 
 - name: Prevent dhcp to modify /etc/resolv.conf
   copy:

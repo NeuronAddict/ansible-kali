@@ -1,7 +1,6 @@
 - name: install openvpn
   apt:
-    name: openvpn,openvpn-systemd-resolved
-    install_recommends: yes
+    name: openvpn
     update_cache: yes
   when: vpn.name is defined and vpn.name != None
 
