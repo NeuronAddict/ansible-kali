@@ -32,6 +32,33 @@ vagrant up
 - firewall
 - ...
 
+## CTF mode
+
+In this mode, you use a vpn, but just for ip. DNS are the host dns.
+
+set vpn.openvpn_username ans vpn.openvpn_password with username/password.
+set vpn.ip_pattern with the begin of your vpn address.
+
+set vpn.name.
+
+upload your vpn conf in openvpn/ folder and name it {{ vpn.name }}.conf.
+set vpn.enabled to got vpn at startup.
+
+Now, in kali you can use the command `set_victim $IP` to set the target box. All network will be open only for this machine (be areful on CTF with many players).
+
+Leave dns.upstream to 10.0.2.3, this is the default for vagrant.
+
+NOTE: vpn with credentials need the line `auth-user-pass /etc/openvpn/auth.txt`. File is populated with credentials.
+
+## audit mode
+
+In this mode, maybe you want more privacy.
+
+Set dns.upstream with your dns server (ex: 9.9.9.9).
+
+Set your vpn, you can vault the vpnfile and include keys inside.
+
+
 ## issues
 
 - https://github.com/NeuronAddict/ansible-kali/issues
@@ -66,12 +93,8 @@ Source: https://www.shellhacks.com/linux-generate-password-hash/
 
 ## vendor
 
-If you use vendor products put it on roles/vendor/
+If you use vendor products put it on vendor/, they will be copieds in ~/vendor.
 
 ## stranges chars
 
 https://github.com/Guake/guake/issues/877
-
-## vpn - systemd
-https://wiki.archlinux.org/title/Systemd-resolved#Fallback
-https://www.cyberciti.biz/faq/dhclient-etcresolvconf-hooks/

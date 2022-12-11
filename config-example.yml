@@ -8,8 +8,8 @@ vpn:
   ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
   name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn.name }}.conf in openvpn with your openvpn conf
   enabled: true # enable vpn at startup
-  openvpn_username: # if vpn
-  openvpn_password:  # if vpn
+  openvpn_username: # if vpn. Use vault
+  openvpn_password:  # if vpn. Use vault
 
 vm:
   name: 'my-awesome-vm' # name of the vm
