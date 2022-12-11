@@ -86,14 +86,6 @@
     dest: /etc/dnsmasq.d/hosts.conf
     content: |
       addn-hosts=/etc/hosts.custom
-  notify:
-    - Reload dnsmasq
-  when: dns.fallback is defined
-
-- name: Set add hosts on dnsmasq
-  copy:
-    dest: /etc/dnsmasq.d/hosts.conf
-    content: |
       no-resolv
   notify:
     - Reload dnsmasq
@@ -101,8 +93,7 @@
 - name: add hosts config
   copy:
     dest: /etc/hosts.custom
-    content: '{{ dns.hosts }}'
-  when: dns.hosts is defined
+    content: "{{ dns.hosts | default('') }}"
 
 - name: Ensure network-manager is started
   systemd:
