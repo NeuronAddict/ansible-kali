@@ -4,10 +4,19 @@
     name: python3-shodan
     state: present
 
+- name: Create directory '/home/{{ default_user }}/.config'
+  file:
+    path: '/home/{{ default_user }}/.config/shodan'
+    state: directory
+    owner: '{{ default_user }}'
+    mode: '0700'
+
 - name: set shodan key
   copy:
     dest: '/home/{{ default_user }}/.config/shodan/api_key'
     content: '{{ shodan_api_key }}'
+    owner: '{{ default_user }}'
+    mode: '0600'
   when: shodan_api_key is defined
 
 - name: install censys client
