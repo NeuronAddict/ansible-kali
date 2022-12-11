@@ -73,7 +73,7 @@
     - Reload dnsmasq
   when: dns.nosec is defined and dns.nosec
 
-- name: fallback dns configuration
+- name: Set Upstream dns configuration
   template:
     src: templates/upstream.conf.j2
     dest: /etc/dnsmasq.d/50-upstream.conf
