@@ -3,6 +3,7 @@ default_user: me # default user, you will login with this user
 git_user: # your git user
 git_email: # git email
 timezone: Europe/Paris # timezone
+
 vpn:
   ip_pattern: 192.168 # if vpn is activated, this is a pattern to get the IP, usefull for the set_victim script, that set an ip for a CTF
   name: # blank or absent to not use vpn, if not blank, you must add a file with {{ vpn.name }}.conf in openvpn with your openvpn conf
@@ -15,12 +16,13 @@ vm:
   cpus: 2 # cpu for vm
   memory: 6000 # memory in MB
   local_ansible: false # if you can't install ansible on your machine, set this to true, ansible will be installed on the vm
+
 bridge_interface: # set this to make a bridged network
 upgrade_on_playbook: true # upgrade vm on playbook, can be very long, use vagrant box update if possible. box is automatically upgraded when run with unattended upgrades.
 intnet_dhcp: true # use an intnet vbox with dhcp
-
 autologin: true # do not prompt login on lightdm
 no_screen_lock: true # disable lock screen (useful for vms with a complex password)
+
 dns:
   nosec: false # set to true to disable dnssec
   upstream: 10.0.2.3 # keep this ip to use dns from your local machine, set to another to use aother dns (useful for privacy)
