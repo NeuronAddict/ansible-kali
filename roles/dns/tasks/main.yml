@@ -51,7 +51,7 @@
     dest: /etc/NetworkManager/conf.d/00-nodns.conf
     content: |
       [main]
-      dns=no
+      dns=none
     mode: '0644'
   notify:
     - Reload dnsmasq
