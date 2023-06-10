@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+
 current_dir    = File.dirname(File.expand_path(__FILE__))
 vagrant_config = YAML.load_file("#{current_dir}/config.yml")
 
