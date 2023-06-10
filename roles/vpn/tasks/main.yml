@@ -16,7 +16,7 @@
     src: templates/auth.txt.j2
     dest: /etc/openvpn/auth.txt
     mode: '0400'
-  when: vpn.name is defined and vpn.name != None
+  when: vpn.name is defined and vpn.name != None and vpn.openvpn_username is defined and vpn.openvpn_username != None and vpn.openvpn_password is defined and vpn.openvpn_password != None
   notify: daemon reload
 
 - name: add vpn file
