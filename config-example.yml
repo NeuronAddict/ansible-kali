@@ -25,7 +25,8 @@ no_screen_lock: true # disable lock screen (useful for vms with a complex passwo
 
 dns:
   nosec: false # set to true to disable dnssec
-  upstream: 10.0.2.3 # keep this ip to use dns from your local machine, set to another to use aother dns (useful for privacy)
+  upstream: # use another dns servers (useful for privacy)
+    - 10.0.2.3
   hosts: |
     127.0.0.1 mydomain
 
