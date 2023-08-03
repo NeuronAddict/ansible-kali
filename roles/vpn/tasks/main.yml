@@ -40,3 +40,6 @@
     enabled: true
     state: started
   when: vpn.name is defined and vpn.name != None and vpn.enabled is defined and vpn.enabled
+
+- name: flush handlers
+  meta: flush_handlers
