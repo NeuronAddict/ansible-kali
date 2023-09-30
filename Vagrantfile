@@ -45,6 +45,9 @@ Vagrant.configure("2") do |config|
   if vagrant_config['bridge_interface']
       config.vm.network "public_network", bridge: vagrant_config['bridge_interface']
   end
+
+  # https://developer.hashicorp.com/vagrant/docs/synced-folders/basic_usage#disabled
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
