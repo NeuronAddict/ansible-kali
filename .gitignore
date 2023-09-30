@@ -3,6 +3,8 @@
 shared_kali/
 vault.yml
 config.yml
+config-*.yml
+!config-example.yml
 roles/vpn/files/etc/openvpn/*.conf
 .secret/
 *.log
