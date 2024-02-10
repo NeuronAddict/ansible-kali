@@ -1,4 +1,4 @@
-apt_proxy: host:port # leave blank to not use apt proxy. if use vpn you can use ipaddress or specify host in dns.hosts. Comment to disallow.
+apt_proxy:  # leave blank to not use apt proxy. if use vpn you can use ipaddress or specify host in dns.hosts. Comment to disallow.
 default_user: me # default user, you will login with this user
 git_user: # your git user
 git_email: # git email
@@ -35,6 +35,6 @@ dns:
 vagrant_shadow:  # use python hash.py to encrypt vagrant password
 user_shadow:  # use python hash.py to encrypt user password
 
-censys_api_id:  # api id for censys (optional)
-censys_api_secret:  # api secret for censys (optional)
-shodan_api_key: # api ky for shodan (optional)
+# censys_api_id:  # api id for censys (optional)
+# censys_api_secret:  # api secret for censys (optional)
+# shodan_api_key: # api ky for shodan (optional)
